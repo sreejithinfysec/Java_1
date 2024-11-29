@@ -1,4 +1,5 @@
 package com.datadoghq.workshops.samplevulnerablejavaapp.controller;
+import org.apache.commons.text.StringEscapeUtils;
 
 import com.datadoghq.workshops.samplevulnerablejavaapp.exception.FileForbiddenFileException;
 import com.datadoghq.workshops.samplevulnerablejavaapp.exception.FileReadException;
@@ -58,7 +59,8 @@ public class MainController {
     log.info("Reading file " + request.path);
     try {
       String result = fileService.readFile(request.path);
-      return new ResponseEntity<>(result, HttpStatus.OK);
+      String escapedResult = StringEscapeUtils.escapeHtml4(result);
+      return new ResponseEntity<>(escapedResult, HttpStatus.OK);
     } catch (FileForbiddenFileException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
     } catch (FileReadException e) {
