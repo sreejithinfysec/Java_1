@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.apache.commons.text.StringEscapeUtils;
 
 @RestController
 public class MainController {
@@ -50,7 +51,8 @@ public class MainController {
   public ResponseEntity<String> testWebsite(@RequestBody WebsiteTestRequest request) {
     log.info("Testing website " + request.url);
     String result = websiteTestService.testWebsite(request);
-    return new ResponseEntity<>(result, HttpStatus.OK);
+    String escapedResult = org.apache.commons.text.StringEscapeUtils.escapeHtml4(result);
+    return new ResponseEntity<>(escapedResult, HttpStatus.OK);
   }
 
   @RequestMapping(method=RequestMethod.POST, value="/view-file", consumes="application/json")
